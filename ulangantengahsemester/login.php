@@ -20,10 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
         * {
@@ -33,12 +30,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #f0f0f0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(42, 82, 152, 0.8)), url('assets/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Poppins';
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
         }
 
         .container-box {

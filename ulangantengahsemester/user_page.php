@@ -24,7 +24,7 @@ $stok = [
     <style>
         body {
             background: linear-gradient(135deg, #1e3c72, #2a5298);
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins';
             padding: 40px;
             color: white;
             margin: 0;

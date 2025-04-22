@@ -11,6 +11,17 @@ $peminjaman = [
     ['nama' => 'Andi', 'barang' => 'Bola Voli', 'status' => 'Dipinjam'],
     ['nama' => 'Budi', 'barang' => 'Bola Basket', 'status' => 'Dikembalikan'],
 ];
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['edit_user'])) {
+    $id = $_POST['id'];
+    $username = $_POST['username'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    $query = "UPDATE users SET username='$username', password='$password' WHERE id=$id";
+    mysqli_query($conn, $query);
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +32,7 @@ $peminjaman = [
     <style>
         body {
             margin: 0;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins';
             background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: white;
             display: flex;
@@ -93,12 +104,59 @@ $peminjaman = [
             background-color: #e74c3c;
         }
 
+        .btn-edit {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-edit:hover {
+            background-color: #3498db;
+        }
+
         .section {
             display: none;
         }
 
         .section.active {
             display: block;
+        }
+
+        /* Modal styling */
+        #editModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #editModal .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            color: #1e3c72;
+        }
+
+        #editModal input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #editModal button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
         }
     </style>
     <script>
@@ -107,6 +165,16 @@ $peminjaman = [
                 section.classList.remove('active');
             });
             document.getElementById(id).classList.add('active');
+        }
+
+        function openEditModal(id, username) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-username').value = username;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
         }
     </script>
 </head>
@@ -152,15 +220,33 @@ $peminjaman = [
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while($user = mysqli_fetch_assoc($user_result)): ?>
+                    <?php
+                    mysqli_data_seek($user_result, 0); 
+                    while($user = mysqli_fetch_assoc($user_result)): ?>
                         <tr>
                             <td><?= $user['username'] ?></td>
                             <td><?= $user['role'] ?></td>
-                            <td><button class="btn-hapus" onclick="return confirm('Hapus user ini?')">Hapus</button></td>
+                            <td>
+                                <button class="btn-hapus" onclick="return confirm('Hapus user ini?')">Hapus</button>
+                                |
+                                <button class="btn-edit" onclick="openEditModal('<?= $user['id'] ?>', '<?= $user['username'] ?>')">Edit</button>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div id="editModal">
+        <div class="modal-content">
+            <h3>Edit User</h3>
+            <form method="POST">
+                <input type="hidden" name="id" id="edit-id">
+                <input type="text" name="username" id="edit-username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password Baru" required>
+                <button type="submit" name="edit_user" style="background-color:#1e3c72; color:white;">Simpan</button>
+                <button type="button" onclick="closeModal()">Batal</button>
+            </form>
         </div>
     </div>
 </body>

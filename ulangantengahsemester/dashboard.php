@@ -11,9 +11,9 @@ if (!isset($_SESSION['username'])) {
     <title>Dashboard</title>
     <style>
         body {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(42, 82, 152, 0.8)), url('assets/background.png') no-repeat center center fixed;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(42, 82, 152, 0.8)), url('assets/background.jpg') no-repeat center center fixed;
             background-size: cover;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins';
             margin: 0;
             padding: 0;
             height: 100vh;
